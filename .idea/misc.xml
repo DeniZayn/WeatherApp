@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/drawable/gradient_wf.xml" value="0.2703125" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_activity.xml" value="0.165625" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_fragment.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/mainfragment.xml" value="0.165625" />
       </map>
     </option>
   </component>
