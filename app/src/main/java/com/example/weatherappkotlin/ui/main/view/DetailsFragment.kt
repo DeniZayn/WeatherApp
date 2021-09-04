@@ -13,17 +13,15 @@ import com.example.weatherappkotlin.ui.main.viewmodel.AppState
 import com.google.android.material.snackbar.Snackbar
 
 
-class MainFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = DetailsFragment()
     }
     private lateinit var viewModel: MainViewModel
 
     private var _binding: MainFragmentBinding? = null // binding
     private val  binding get() = _binding!!           // binding
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

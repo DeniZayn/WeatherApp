@@ -16,17 +16,18 @@ class MainViewModel : ViewModel() {
 
     val liveData: LiveData<AppState> = liveDataToObserve                          // AppState
 
-    fun  getWeatherFromLocalSource() = getDataFromLocalSource()
-    fun  getWeatherFromRemoteSource() = getWeatherFromLocalSource()
 
-
-    private fun getDataFromLocalSource() {
+    private fun getDataFromLocalSource(isRussian: Boolean = true) {
      liveDataToObserve.value = AppState.Loading
         Thread {
-            Thread.sleep(5000)
-            if (Random.nextBoolean()) {
-                liveDataToObserve.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
-            } else  {liveDataToObserve.postValue(AppState.Error(Exception("No Connection")))}
+            Thread.sleep(2000)
+             liveDataToObserve.postValue(
+                 if (isRussian) {
+                     AppState.Success(repository.getWeatherFromLocalStorageRus())
+                 } else {AppState.Success(repository.getWeatherFromLocalStorageWorld())
+
+                 }
+             )
         }.start()
     }
 
