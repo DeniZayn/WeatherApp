@@ -1,11 +1,17 @@
 package com.example.weatherappkotlin.ui.main.model
 
-data class Weather (
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 0,
     val feelsLike: Int = 0,
-)
-    fun getDefaultCity(): City = City("Moscow",59.56,30.18)
+)  : Parcelable
+
+
+fun getDefaultCity(): City = City("Moscow",59.56,30.18)
 
     fun getWorldCities(): List<Weather> = listOf(
 

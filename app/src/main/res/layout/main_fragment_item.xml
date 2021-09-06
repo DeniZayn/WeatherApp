@@ -9,6 +9,7 @@
     >
 
     <TextView
+        android:id="@+id/cityName"
         tools:text="Moscow"
         android:padding="8dp"
         android:layout_width="wrap_content"
