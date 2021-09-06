@@ -12,22 +12,31 @@ class MainViewModel : ViewModel() {
 
 
     private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()   // AppState
+    private var liveDataIsRusToObserve : MutableLiveData<Boolean> = MutableLiveData(true)
     private val repository: Repository = RepositoryImpl()
 
+
     val liveData: LiveData<AppState> = liveDataToObserve                          // AppState
+    val liveDataIsRus: LiveData<Boolean> = liveDataIsRusToObserve
 
-    fun  getWeatherFromLocalSource() = getDataFromLocalSource()
-    fun  getWeatherFromRemoteSource() = getWeatherFromLocalSource()
+    fun getWeatherFromLocalSource() = getDataFromLocalSource()
 
-
-    private fun getDataFromLocalSource() {
-     liveDataToObserve.value = AppState.Loading
-        Thread {
-            Thread.sleep(5000)
-            if (Random.nextBoolean()) {
-                liveDataToObserve.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
-            } else  {liveDataToObserve.postValue(AppState.Error(Exception("No Connection")))}
-        }.start()
+    fun onLanguageChange(){
+        liveDataIsRusToObserve.value = liveDataIsRusToObserve.value == false
     }
 
+    private fun getDataFromLocalSource(isRussian: Boolean = true) {
+     liveDataToObserve.value = AppState.Loading
+        Thread {
+            Thread.sleep(2000)
+             liveDataToObserve.postValue(
+                 AppState.Success(
+                 if  (liveDataIsRusToObserve.value == true) {
+                     repository.getWeatherFromLocalStorageRus()
+                 } else { repository.getWeatherFromLocalStorageWorld()
+                 }
+             )
+             )
+        }.start()
+    }
 }
