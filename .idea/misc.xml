@@ -5,8 +5,11 @@
       <map>
         <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/drawable/gradient_wf.xml" value="0.2703125" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/drawable/ic_russia.xml" value="0.1824074074074074" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/details_fragment.xml" value="0.1" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_activity.xml" value="0.165625" />
-        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_fragment.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/main_fragment_item.xml" value="0.25" />
         <entry key="..\:/Users/denis/AndroidStudioProjects/WeatherAppKotlin/app/src/main/res/layout/mainfragment.xml" value="0.165625" />
       </map>
     </option>
