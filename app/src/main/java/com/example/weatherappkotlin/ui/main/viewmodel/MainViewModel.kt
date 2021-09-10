@@ -10,17 +10,14 @@ import kotlin.random.Random
 
 class MainViewModel : ViewModel() {
 
-
-    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()   // AppState
+    private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()
     private var liveDataIsRusToObserve : MutableLiveData<Boolean> = MutableLiveData(true)
     private val repository: Repository = RepositoryImpl()
 
-
-    val liveData: LiveData<AppState> = liveDataToObserve                          // AppState
+    val liveData: LiveData<AppState> = liveDataToObserve
     val liveDataIsRus: LiveData<Boolean> = liveDataIsRusToObserve
 
     fun getWeatherFromLocalSource() = getDataFromLocalSource()
-
     fun onLanguageChange(){
         liveDataIsRusToObserve.value = liveDataIsRusToObserve.value == false
     }

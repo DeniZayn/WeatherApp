@@ -18,62 +18,38 @@ import com.google.android.material.snackbar.Snackbar
 class DetailsFragment : Fragment() {
 
     companion object {
-        fun newInstance(bundle: Bundle):DetailsFragment {
-            val fragment = DetailsFragment()
-            fragment.arguments = bundle
-            return fragment
-
-        }
         const val WEATHER_PAR = "WEATHER_PAR"
-    }
- //   private lateinit var viewModel: MainViewModel
-    private var _binding: DetailsFragmentBinding? = null // binding
-    private val  binding get() = _binding!!           // binding
+        fun newInstance(bundle: Bundle):DetailsFragment =
+            DetailsFragment().apply {arguments = bundle }
+        }
+    private var _binding: DetailsFragmentBinding? = null
+    private val  binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View { val view = inflater.inflate(R.layout.details_fragment, container, false) // binding
+    ): View { val view = inflater.inflate(R.layout.details_fragment, container, false)
 
-        _binding = DetailsFragmentBinding.bind(view) // binding
-        return binding.root                       // binding
+        _binding = DetailsFragmentBinding.bind(view)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weather = arguments?.getParcelable<Weather>(WEATHER_PAR)
-        if (weather != null) {
-            binding.message.text = "${weather.city.name}"  +
-                    "\n lat/long ${weather.city.lat} ${weather.city.long}" +
-                    "\n temperature ${weather.temperature}" +
-                    "\n feels like ${weather.feelsLike}"
+        arguments?.getParcelable<Weather>(WEATHER_PAR)?.let {
+            weather -> weather.city.also { city ->
 
-        }
-//        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-//        viewModel.liveData.observe(viewLifecycleOwner, { state ->
-//             renderData(state)
-//        })
-    //    viewModel.getWeatherFromLocalSource(isRus)
+            binding.city.text = city.name
+            binding.lat.text = city.lat.toString()
+            binding.Long.text = city.long.toString() }
 
+            with(binding) {
+            temperature.text = weather.temperature.toString()
+            feelsLike.text = weather.feelsLike.toString()
+            }
+         }
     }
-
- //   private fun renderData(state: AppState) {
- //       when(state) {
- //         is AppState.Loading -> binding.loadingLayout.visibility= View.VISIBLE
- //         is AppState.Success -> {
- //             binding.loadingLayout.visibility = View.GONE           }
- //           is AppState.Error -> {
- //               binding.loadingLayout.visibility = View.GONE
- //                   Snackbar
- //                  .make(binding.mainFragmentFAB, "Error:${state.error}", Snackbar.LENGTH_INDEFINITE)
- //                  .setAction("Reload") { viewModel.getWeatherFromLocalSource() }
- //                  .show()             }        }
- //       binding.message.text = data                         // binding
- //       binding.TestButton2. setOnClickListener {
- //         viewModel.liveData                                // setOnClickListener
- //       }     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
