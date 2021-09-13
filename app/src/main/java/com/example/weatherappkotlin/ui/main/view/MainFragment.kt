@@ -25,6 +25,7 @@ class MainFragment : Fragment() {
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
+
     private val adapter: MainAdapter by lazy { MainAdapter() }
 
     override fun onCreateView(

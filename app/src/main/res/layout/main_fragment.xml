@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_wf"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,11 +44,6 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="visible"/>
-    <ProgressBar
-        style="?android:attr/statusBarColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
 
     </FrameLayout>
 
