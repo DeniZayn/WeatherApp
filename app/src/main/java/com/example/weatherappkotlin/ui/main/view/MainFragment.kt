@@ -77,7 +77,7 @@ class MainFragment : Fragment() {
     private fun renderData(state: AppState) {
 
         when (state) {
-            is AppState.Loading -> binding.loadingLayout.show()
+            is AppState.Loading -> binding.loadingLayout.hide()
             is AppState.Success -> {
                 binding.loadingLayout.hide()
                 adapter.weatherData = state.weather
