@@ -15,7 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import coil.api.load
+//import coil.api.load
 import com.example.weatherappkotlin.R
 import com.example.weatherappkotlin.databinding.DetailsFragmentBinding
 import com.example.weatherappkotlin.databinding.MainFragmentBinding
@@ -25,6 +25,8 @@ import com.example.weatherappkotlin.ui.main.viewmodel.AppState
 import com.example.weatherappkotlin.ui.main.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso.get
 import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.main_fragment.view.*
 import kotlinx.android.synthetic.main.main_fragment_item.*
@@ -93,7 +95,11 @@ class DetailsFragment : Fragment() {
                 val weather = state.weather.first()
 
                 with(binding) {
-                    binding.imageView.load ("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+ //                   binding.imageView.load ("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    Picasso
+                    .get()
+                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    .into(imageView);
 
                     temperatureValue.text = weather.temperature.toString()
                     feelsLikeValue.text = weather.feelsLike.toString()
