@@ -35,7 +35,6 @@ class MainFragment : Fragment() {
 
     ): View {
         val view = inflater.inflate(R.layout.main_fragment, container, false) // binding
-
         _binding = MainFragmentBinding.bind(view)
         return binding.root
     }
@@ -49,7 +48,7 @@ class MainFragment : Fragment() {
                     .replace(
                         R.id.container, DetailsFragment.newInstance(Bundle().apply
                         {
-                            putParcelable(DetailsFragment.WEATHER_PAR, weather)
+                            putParcelable(DetailsFragment.FACT_WEATHER_EXTRA, weather)
                         })
                     )
                     .addToBackStack("")
@@ -77,7 +76,8 @@ class MainFragment : Fragment() {
     private fun renderData(state: AppState) {
 
         when (state) {
-            is AppState.Loading -> binding.loadingLayout.hide()
+            is AppState.Loading ->
+                binding.loadingLayout.show()
             is AppState.Success -> {
                 binding.loadingLayout.hide()
                 adapter.weatherData = state.weather

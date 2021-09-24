@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import coil.api.load
 //import coil.api.load
 import com.example.weatherappkotlin.R
 import com.example.weatherappkotlin.databinding.DetailsFragmentBinding
@@ -47,7 +48,7 @@ import okhttp3.Callback as Callback1
 class DetailsFragment : Fragment() {
 
     companion object {
-        const val WEATHER_PAR = "WEATHER_PAR"
+        const val FACT_WEATHER_EXTRA = "WEATHER EXTRA"
         fun newInstance(bundle: Bundle): DetailsFragment =
             DetailsFragment().apply { arguments = bundle }
     }
@@ -94,12 +95,14 @@ class DetailsFragment : Fragment() {
                 binding.loadingLayout.hide()
                 val weather = state.weather.first()
 
+                viewModel.saveWeather(weather)
+
                 with(binding) {
- //                   binding.imageView.load ("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                    Picasso
-                    .get()
-                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-                    .into(imageView);
+                    binding.imageView.load ("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                    Picasso
+//                    .get()
+//                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                    .into(imageView);
 
                     temperatureValue.text = weather.temperature.toString()
                     feelsLikeValue.text = weather.feelsLike.toString()
