@@ -1,18 +1,56 @@
 package com.example.weatherappkotlin.ui.main.view
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.database.Cursor
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat
 import com.example.weatherappkotlin.R
 import com.example.weatherappkotlin.databinding.MainActivityBinding
+import java.util.jar.Manifest
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: MainActivityBinding
+    private val permissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+        when{
+            result -> getContact()
+            shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS) -> {
+                Toast.makeText(this, " Go to app settings and permissions ", Toast.LENGTH_LONG).show()
+            }
+            else -> Toast.makeText(this, " Fail ", Toast.LENGTH_LONG).show()
+        }
+
+        if (result) {
+            getContact()
+            // granted
+        } else {
+            Toast.makeText(this, " Fail ", Toast.LENGTH_LONG).show()
+            // denied
+        }
+    }
+
+
+
+
+    private val binding: MainActivityBinding by lazy {
+        MainActivityBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = MainActivityBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
@@ -20,5 +58,58 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, MainFragment.newInstance())
                 .commitNow()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+ //   @RequiresApi(Build.VERSION_CODES.M)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.idHistory -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container,HistoryFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.getContacts -> {
+                permissionResult.launch(android.Manifest.permission.READ_CONTACTS)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    @SuppressLint("Range")
+    private fun getContact() {
+         val cursor : Cursor? = contentResolver.query(
+            ContactsContract.Contacts.CONTENT_URI,
+            null,
+            null,
+            null,
+            ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+        )
+
+          val contacts =  mutableListOf<String>()
+              cursor?.let {
+              for (i in 0..cursor.count) {
+              if (cursor.moveToPosition(i)) {
+                 val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+
+                  contacts.add(name)
+             }
+         }
+            it.close()
+     }
+        AlertDialog.Builder(this)
+            .setItems(contacts.toTypedArray()){ _, _ ->  }
+            .setCancelable(true)
+            .show()
     }
 }

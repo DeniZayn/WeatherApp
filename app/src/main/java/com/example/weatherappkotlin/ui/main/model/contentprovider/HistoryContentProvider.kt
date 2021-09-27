@@ -1,0 +1,93 @@
+package com.example.weatherappkotlin.ui.main.model.contentprovider
+
+import android.content.ContentProvider
+import android.content.ContentUris
+import android.content.ContentValues
+import android.content.UriMatcher
+import android.database.Cursor
+import android.net.Uri
+import com.example.weatherappkotlin.ui.main.model.database.HistoryDao
+import com.example.weatherappkotlin.ui.main.model.database.HistoryEntity
+import com.example.weatherappkotlin.ui.main.view.App
+import java.lang.IllegalArgumentException
+
+private const val URI_ALL = 1 // URI для всех записей
+private const val URI_ID = 2 // URI для конкретной записи
+private const val ENTITY_PATH = "HistoryEntity"
+
+class HistoryContentProvider : ContentProvider() {
+
+    private var authorities: String? = null // Адрес URI
+    private lateinit var uriMatcher: UriMatcher // помогает определить тип адреса URI
+   //    Типы данных
+    private var entityContentType: String? = null // Набор строк
+    private var entityContentItemType: String? = null // Одна строка
+
+    private lateinit var contentUri: Uri // Адрес URI Provider
+
+
+    override fun onCreate(): Boolean {
+        authorities = "geek.provider"
+        uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+        uriMatcher.addURI(authorities, ENTITY_PATH, URI_ALL)
+        uriMatcher.addURI(authorities, "$ENTITY_PATH/#", URI_ID)
+
+        entityContentType = "vnd.android.cursor.dir/vnd.$authorities.$ENTITY_PATH"
+        entityContentItemType = "vnd.android.cursor.dir/vnd.$authorities.$ENTITY_PATH"
+
+        contentUri = Uri.parse("content://$authorities/$ENTITY_PATH")
+        return true
+    }
+
+    override fun query(
+        uri: Uri, projection: Array<String>?, selection: String?,
+        selectionArgs: Array<String>?, sortOrder: String?
+    ): Cursor? {
+
+        val historyDao : HistoryDao = App.getHistoryDao()
+
+        val cursor = when(uriMatcher.match(uri)) {
+            URI_ALL -> historyDao.getHistoryCursor()
+            URI_ID -> {
+                val id = ContentUris.parseId(uri)
+                historyDao.getHistoryCursor(id)
+            }
+            else -> throw IllegalArgumentException("WRONG uri: $uri")
+        }
+
+        cursor.setNotificationUri(context!!.contentResolver,contentUri)
+        return cursor
+
+    }
+
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+        require(uriMatcher.match(uri) == URI_ID) {"WRONG uri: $uri"}
+        val historyDao = App.getHistoryDao()
+
+        val id = ContentUris.parseId(uri)
+
+        historyDao.deleteById(id)
+
+        context?.contentResolver?.notifyChange(uri, null)
+        return 1
+
+    }
+
+    override fun getType(uri: Uri): String? =
+        when (uriMatcher.match(uri)) {
+            URI_ALL -> entityContentType
+            URI_ID -> entityContentItemType
+            else -> null
+        }
+
+
+    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+        TODO()
+    }
+
+    override fun update(
+        uri: Uri, values: ContentValues?, selection: String?,
+        selectionArgs: Array<String>?
+    ): Int { TODO()}
+
+}
