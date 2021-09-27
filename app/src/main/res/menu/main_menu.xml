@@ -6,4 +6,9 @@
         android:title="History"
         android:icon="@android:drawable/ic_menu_recent_history"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/getContacts"
+        android:title="Contacts"
+        android:icon="@drawable/ic_baseline_contacts_24"
+        app:showAsAction="always"/>
 </menu>
