@@ -3,6 +3,10 @@ package com.example.weatherappkotlin.ui.main.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,33 +20,119 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
+import com.example.weatherappkotlin.MapsFragment
 import com.example.weatherappkotlin.R
 import com.example.weatherappkotlin.databinding.MainActivityBinding
+import java.io.IOError
+import java.io.IOException
 import java.util.jar.Manifest
 
 
+private const val REFRESH_PERIOD = 60000L
+private const val MINIMAL_DISTANCE = 100f
+
 class MainActivity : AppCompatActivity() {
 
-    private val permissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+    private val permissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+            when {
+                result -> getContact()
+                shouldShowRequestPermissionRationale(
+                    this,
+                    android.Manifest.permission.READ_CONTACTS
+                )
+                -> {
+                    Toast.makeText(
+                        this,
+                        " Go to app settings and permissions ",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else -> Toast.makeText(this, " Fail ", Toast.LENGTH_LONG).show()
+            }
+        }
+    private val permissionGeoResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
         when{
-            result -> getContact()
-            shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_CONTACTS) -> {
-                Toast.makeText(this, " Go to app settings and permissions ", Toast.LENGTH_LONG).show()
+            result -> getLocation()
+            shouldShowRequestPermissionRationale
+                (this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                Toast.makeText(
+                    this,
+                    " Go to app settings and permissions ",
+                    Toast.LENGTH_LONG)
+                    .show()
             }
             else -> Toast.makeText(this, " Fail ", Toast.LENGTH_LONG).show()
         }
+    }
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        if (result) {
-            getContact()
-            // granted
-        } else {
-            Toast.makeText(this, " Fail ", Toast.LENGTH_LONG).show()
-            // denied
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        locationManager.getProvider(LocationManager.GPS_PROVIDER)?. let {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                REFRESH_PERIOD,
+                MINIMAL_DISTANCE,
+                object: LocationListener {
+
+                    override fun onLocationChanged(location: Location) {
+                        getAddressByLocation(location)
+                    }
+
+                    override fun onStatusChanged(
+                        provider: String?,
+                        status: Int,
+                        extras: Bundle?
+                    ){
+                    // do nothing
+                     }
+
+                    override fun onProviderEnabled(provider: String) {
+                        super.onProviderEnabled(provider)
+                    }
+
+                    override fun onProviderDisabled(provider: String) {
+                        super.onProviderDisabled(provider)
+                    }
+
+                }
+            )
+        }
+
+    } else {
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?.let {
+                getAddressByLocation(it)
+            } ?: {/* ... */}
         }
     }
 
+    private fun getAddressByLocation(location: Location) {
+        val geocoder = Geocoder(this)
 
+        Thread {
+            try {
+                val address = geocoder.getFromLocation(
+                    location.latitude,
+                    location.longitude,
+                    1
+                )
+                binding.container.post{
+                    AlertDialog.Builder(this)
+                        .setMessage(address[0].getAddressLine(0))
+                        .setCancelable(true)
+                        .show()
+                }
 
+            } catch (e: IOException){
+                e.printStackTrace()
+            }
+
+        }.start()
+
+    }
 
     private val binding: MainActivityBinding by lazy {
         MainActivityBinding.inflate(layoutInflater)
@@ -81,6 +171,21 @@ class MainActivity : AppCompatActivity() {
                 permissionResult.launch(android.Manifest.permission.READ_CONTACTS)
                 true
             }
+            R.id.getLocation -> {
+                permissionGeoResult.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                true
+            }
+
+            R.id.showMaps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .replace(R.id.container,MapsFragment())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -25,10 +25,10 @@ interface HistoryDao {
     @Query("SELECT id, city, temperature FROM HistoryEntity ORDER BY timestamp DESC")
     fun getHistoryCursor(): Cursor
 
-    @Query("SELECT id, city, temperature FROM HistoryEntity WHERE id = id")
+    @Query("SELECT id, city, temperature FROM HistoryEntity WHERE id = :id")
     fun getHistoryCursor(id: Long): Cursor
 
-    @Query("DELETE FROM HistoryEntity WHERE id = id")
-    fun deleteById(id:Long)
+    @Query("DELETE FROM HistoryEntity WHERE id = :id")
+    fun deleteById(id: Long)
 
 }
