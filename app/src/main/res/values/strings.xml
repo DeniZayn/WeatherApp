@@ -4,6 +4,10 @@
     <string name="temp">°C</string>
     <string name="feels_like">Feels like</string>
     <string name="todo">TODO</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_address">default_address</string>
+    <string name="search">button_search_map</string>
+    <string name="marker_start">Start</string>
 </resources>

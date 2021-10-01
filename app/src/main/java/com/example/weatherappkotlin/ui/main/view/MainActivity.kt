@@ -7,7 +7,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -15,17 +14,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import androidx.core.content.ContextCompat
-import com.example.weatherappkotlin.MapsFragment
+import com.example.weatherappkotlin.ui.main.GoogleMapsFragment
 import com.example.weatherappkotlin.R
 import com.example.weatherappkotlin.databinding.MainActivityBinding
-import java.io.IOError
 import java.io.IOException
-import java.util.jar.Manifest
 
 
 private const val REFRESH_PERIOD = 60000L
@@ -179,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             R.id.showMaps -> {
                 supportFragmentManager.apply {
                     beginTransaction()
-                        .replace(R.id.container,MapsFragment())
+                        .replace(R.id.container, GoogleMapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
