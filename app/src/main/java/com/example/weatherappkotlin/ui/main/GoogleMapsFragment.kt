@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.weatherappkotlin.R
+import com.example.weatherappkotlin.databinding.FragmentMaps2Binding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,11 +21,12 @@ import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.fragment_maps2.*
 import java.io.IOException
 
-import com.example.weatherappkotlin.databinding.FragmentGoogleMapsMainBinding
+
+import com.example.weatherappkotlin.databinding.FragmentMapsBinding
 
 class GoogleMapsFragment : Fragment() {
 
-    private var _binding: FragmentGoogleMapsMainBinding? = null
+    private var _binding: FragmentMaps2Binding? = null
     private val binding get() = _binding!!
 
     private lateinit var map: GoogleMap
@@ -50,7 +52,7 @@ class GoogleMapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentGoogleMapsMainBinding.inflate(inflater, container, false)
+        _binding = FragmentMaps2Binding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -62,7 +64,7 @@ class GoogleMapsFragment : Fragment() {
     }
 
     private fun initSearchByAddress() {
-        binding.buttonSearch.setOnClickListener {
+        binding.searchBtn.setOnClickListener {
             val geoCoder = Geocoder(context)
             val searchText = searchAddress.text.toString()
             Thread {
