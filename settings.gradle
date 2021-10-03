@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "WeatherAppKotlin"
 include ':app'
+include ':app-content-provider-client'
