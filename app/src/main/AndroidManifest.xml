@@ -17,7 +17,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:name=".ui.main.view.App"
         android:allowBackup="true"
@@ -27,7 +26,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherAppKotlin">
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -58,6 +56,15 @@
         </activity>
 
         <service android:name=".ui.main.model.MainService" />
+        <service
+            android:name=".ui.main.model.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

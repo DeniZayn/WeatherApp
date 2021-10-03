@@ -113,6 +113,7 @@ class MainActivity : AppCompatActivity() {
                     location.longitude,
                     1
                 )
+
                 binding.container.post{
                     AlertDialog.Builder(this)
                         .setMessage(address[0].getAddressLine(0))
