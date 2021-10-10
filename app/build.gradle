@@ -21,9 +21,21 @@ android {
     }
 
     buildTypes {
+        debug {
+            versionNameSuffix '-debug'
+            buildConfigField "String", "TYPE", '"RELEASE"'
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        
+        staging{
+            initWith debug
+            minifyEnabled false
+            versionNameSuffix '-staging'
+            buildConfigField "String", "TYPE", '"RELEASE"'
         }
     }
     compileOptions {
@@ -35,6 +47,20 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        free {
+            dimension 'version'
+            versionNameSuffix '.free'
+            applicationId "com.example.weatherappkotlin.free"
+        }
+        paid {
+            dimension 'version'
+            versionNameSuffix '.paid'
+            applicationId "com.example.weatherappkotlin.paid"
+        }
+
     }
 }
 
