@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="loadingBackground">#BBC0C3</color>
     <color name="statusBarColor">#217A93</color>
+    <color name="navyBlue">#000080</color>
+    <color name="aquamarine">#7FFFD4</color>
+
 </resources>
